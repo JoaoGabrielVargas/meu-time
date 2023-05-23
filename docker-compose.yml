@@ -1,0 +1,12 @@
+version: '3.9'
+services:
+  frontend:
+    build: ./src
+    ports:
+      - 5173:5173
+    platform: linux/x86_64
+    working_dir: /src
+    healthcheck:
+      test: ["CMD", "lsof", "-t", "-i:3000"]  # Caso utilize outra porta interna para o front, altere ela aqui também
+      timeout: 10s
+      retries: 5
