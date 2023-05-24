@@ -1,0 +1,23 @@
+.container {
+  background-color: #f7f7f7;
+  border-radius: 4px;
+  height: 85vh;
+  width: 50vw;
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+  gap: 3rem;
+  padding: 22px;
+}
+
+img {
+  width: 75%;
+}
+
+h1 {
+  font-size: 24px;
+}
+
+p {
+  color: red;
+}

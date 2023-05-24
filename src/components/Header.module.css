@@ -1,0 +1,8 @@
+.header {
+  border: solid 1px red;
+}
+
+form {
+  border: solid 2px blue;
+  display: flex;
+}
