@@ -5,10 +5,11 @@ import Header from '../components/Header';
 
 function Home() {
   const {
-    user,
+    user, setApiKey,
   } = useContext(context);
   return (
     <div className={style.container}>
+      { setApiKey('7dc91466cf14efcce68f7d256bcea2a9')}
       <Header user={user} />
     </div>
   );

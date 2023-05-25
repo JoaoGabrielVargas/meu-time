@@ -9,6 +9,7 @@ function Provider({ children }) {
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
   const [countryList, setCountryList] = useState([]);
+  const [country, setCountry] = useState('');
   const [user, setUser] = useState({
     fullname: '',
     email: '',
@@ -32,16 +33,25 @@ function Provider({ children }) {
 
   const fetchCoutryList = useCallback(async (key) => {
     setLoading(true);
-    const response = await fetchCountries(key);
+    const { data: { response } } = await fetchCountries(key);
     console.log(response);
+    setCountryList(response);
     setLoading(false);
   }, [setApiKey]);
 
-  /* const onSelectChange = useCallback(async (value) => {
+  const fetchLeagueList = useCallback(async (key) => {
     setLoading(true);
-    const response = await footballApi();
+    const response = await fetchCountries(key);
     console.log(response);
-  }); */
+    /* setCountryList(response); */
+    setLoading(false);
+  }, [setApiKey]);
+
+  const onChangeCountry = useCallback(async (e) => {
+    setLoading(true);
+    setCountry(e);
+    setLoading(false);
+  });
 
   const value = useMemo(() => ({
     fetchCoutryList,
@@ -51,7 +61,10 @@ function Provider({ children }) {
     error,
     user,
     loading,
-  }), [onLogin, apiKey, error, user, loading]);
+    countryList,
+    onChangeCountry,
+    country,
+  }), [onLogin, apiKey, error, user, loading, countryList, country]);
   return (
     <context.Provider value={value}>
       {children}
