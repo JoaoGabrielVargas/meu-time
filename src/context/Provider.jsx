@@ -2,13 +2,14 @@ import React, { useCallback, useMemo, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import context from './Context';
-import { footballApi, fetchCountries } from '../services/footballApi';
+import { footballApi, fetchCountries, fetchLeagues } from '../services/footballApi';
 
 function Provider({ children }) {
   const [apiKey, setApiKey] = useState('');
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
   const [countryList, setCountryList] = useState([]);
+  const [leagueList, setLeagueList] = useState([]);
   const [country, setCountry] = useState('');
   const [user, setUser] = useState({
     fullname: '',
@@ -34,24 +35,24 @@ function Provider({ children }) {
   const fetchCoutryList = useCallback(async (key) => {
     setLoading(true);
     const { data: { response } } = await fetchCountries(key);
-    console.log(response);
     setCountryList(response);
     setLoading(false);
   }, [setApiKey]);
 
-  const fetchLeagueList = useCallback(async (key) => {
+  const fetchLeagueList = useCallback(async () => {
     setLoading(true);
-    const response = await fetchCountries(key);
-    console.log(response);
-    /* setCountryList(response); */
+    const { data: { response } } = await fetchLeagues(apiKey, country.name);
+    const leagueArray = response.map((e) => ({ name: e.league.name, flag: e.league.logo }));
+    setLeagueList(leagueArray);
     setLoading(false);
-  }, [setApiKey]);
+  }, [country]);
 
   const onChangeCountry = useCallback(async (e) => {
     setLoading(true);
     setCountry(e);
+    await fetchLeagueList();
     setLoading(false);
-  });
+  }, [country]);
 
   const value = useMemo(() => ({
     fetchCoutryList,
@@ -64,7 +65,9 @@ function Provider({ children }) {
     countryList,
     onChangeCountry,
     country,
-  }), [onLogin, apiKey, error, user, loading, countryList, country]);
+    fetchLeagueList,
+    leagueList,
+  }), [onLogin, apiKey, error, user, loading, countryList, country, leagueList]);
   return (
     <context.Provider value={value}>
       {children}

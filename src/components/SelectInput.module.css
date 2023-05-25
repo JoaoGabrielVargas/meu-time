@@ -1,8 +1,11 @@
 .label {
   display: flex;
   align-items: center;
-  border: solid 2px blue;
-}                          
+}      
+
+.select {
+  width: 25%;
+}
 
 img {
   width: 20%;

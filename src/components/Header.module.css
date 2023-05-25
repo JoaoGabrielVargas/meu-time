@@ -1,10 +1,17 @@
 .header {
-  border: solid 1px red;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.5rem;
   width: 95%;
 }
 
+p {
+  align-self: flex-start;
+}
+
 form {
-  border: solid 2px blue;
   display: flex;
-  width: 90%;
+  justify-content: space-around;
+  width: 100%;
 }

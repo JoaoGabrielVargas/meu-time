@@ -10,18 +10,18 @@ function Header({ user }) {
   } = useContext(context);
 
   useEffect(() => {
-    console.log(fetchCoutryList);
     fetchCoutryList(apiKey);
   }, []);
   return (
     <header className={style.header}>
-      Bem vindo ao
-      {' '}
-      <strong>Meu Time</strong>
-      ,
-      {' '}
-      {user.fullname}
-      !
+      <p>
+        Bem vindo ao
+        <strong> Meu Time, </strong>
+        {user.fullname}
+      </p>
+      <p>
+        Primeiro, selecione um país.
+      </p>
       <form>
         <SelectInput
           placeholder="Selecione o país"
@@ -31,6 +31,12 @@ function Header({ user }) {
         />
         <SelectInput
           placeholder="Selecione a liga"
+          data={leagueList}
+          onChange={onChangeLeague}
+          value={league}
+        />
+        <SelectInput
+          placeholder="Selecione o time"
           data={leagueList}
           onChange={onChangeLeague}
           value={league}

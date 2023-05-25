@@ -27,7 +27,6 @@ async function fetchCountries(key) {
     headers: myHeaders,
   };
   try {
-    console.log('chegou na api carai');
     const response = await axios.get('https://v3.football.api-sports.io/countries', requestOptions);
     return response;
   } catch (error) {
@@ -36,17 +35,17 @@ async function fetchCountries(key) {
   }
 }
 
-async function fetchLeagues(key) {
+async function fetchLeagues(key, country) {
   const myHeaders = {
     'x-rapidapi-key': key,
     'x-rapidapi-host': 'v3.football.api-sports.io',
   };
   const requestOptions = {
     headers: myHeaders,
+    parameters: country,
   };
   try {
-    console.log('chegou na api carai');
-    const response = await axios.get('https://v3.football.api-sports.io/countries', requestOptions);
+    const response = await axios.get(`https://v3.football.api-sports.io/leagues?country=${country}`, requestOptions);
     return response;
   } catch (error) {
     console.log(error);
