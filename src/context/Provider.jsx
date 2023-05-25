@@ -2,7 +2,9 @@ import React, { useCallback, useMemo, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import context from './Context';
-import { footballApi, fetchCountries, fetchLeagues } from '../services/footballApi';
+import {
+  footballApi, fetchCountries, fetchLeagues, fetchTeams,
+} from '../services/footballApi';
 
 function Provider({ children }) {
   const [apiKey, setApiKey] = useState('');
@@ -10,7 +12,10 @@ function Provider({ children }) {
   const [loading, setLoading] = useState(false);
   const [countryList, setCountryList] = useState([]);
   const [leagueList, setLeagueList] = useState([]);
+  const [league, setLeague] = useState('');
   const [country, setCountry] = useState('');
+  const [seasonsList, setSeasonsList] = useState([]);
+  const [season, setSeason] = useState('');
   const [user, setUser] = useState({
     fullname: '',
     email: '',
@@ -35,6 +40,7 @@ function Provider({ children }) {
   const fetchCoutryList = useCallback(async (key) => {
     setLoading(true);
     const { data: { response } } = await fetchCountries(key);
+    console.log(response);
     setCountryList(response);
     setLoading(false);
   }, [setApiKey]);
@@ -42,7 +48,10 @@ function Provider({ children }) {
   const fetchLeagueList = useCallback(async () => {
     setLoading(true);
     const { data: { response } } = await fetchLeagues(apiKey, country.name);
-    const leagueArray = response.map((e) => ({ name: e.league.name, flag: e.league.logo }));
+    const leagueArray = response.map((e) => (
+      {
+        name: e.league.name, flag: e.league.logo, id: e.league.id, seasons: e.seasons,
+      }));
     setLeagueList(leagueArray);
     setLoading(false);
   }, [country]);
@@ -53,6 +62,40 @@ function Provider({ children }) {
     await fetchLeagueList();
     setLoading(false);
   }, [country]);
+
+  const onChangeLeague = useCallback(async (e) => {
+    setLoading(true);
+    setLeague(e);
+    const { seasons } = league;
+    const seasonsArray = seasons.map((el) => (
+      {
+        name: el.year,
+      }));
+    setSeasonsList(seasonsArray);
+
+    setLoading(false);
+  }, [league]);
+
+  const onChangeSeasons = useCallback(async (e) => {
+    setLoading(true);
+    setSeason(e);
+
+    setLoading(false);
+  }, [season]);
+
+  /* const fetchTeamList = useCallback(async () => {
+    setLoading(true);
+    const result = await fetchTeams(apiKey, league.id, season.name);
+    coonsole.log(result);
+    setLoading(false);
+  }, [season]); */
+
+  /* const onChangeTeam = useCallback(async (e) => {
+    setLoading(true);
+    setCountry(e);
+    await fetchLeagueList();
+    setLoading(false);
+  }, [country]); */
 
   const value = useMemo(() => ({
     fetchCoutryList,
@@ -67,7 +110,12 @@ function Provider({ children }) {
     country,
     fetchLeagueList,
     leagueList,
-  }), [onLogin, apiKey, error, user, loading, countryList, country, leagueList]);
+    onChangeLeague,
+    seasonsList,
+    onChangeSeasons,
+    season,
+  }), [onLogin,
+    apiKey, error, user, loading, countryList, country, leagueList, seasonsList, season]);
   return (
     <context.Provider value={value}>
       {children}

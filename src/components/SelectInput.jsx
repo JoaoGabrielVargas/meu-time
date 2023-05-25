@@ -5,7 +5,6 @@ import style from './SelectInput.module.css';
 function SelectInput({
   placeholder, data, onChange, value,
 }) {
-  console.log(data);
   return (
     <div className={style.select}>
       <Select

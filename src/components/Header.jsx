@@ -6,7 +6,12 @@ import context from '../context/Context';
 function Header({ user }) {
   const {
     apiKey,
-    fetchCoutryList, countryList, onChangeCountry, country, leagueList, onChangeLeague, league,
+    fetchCoutryList,
+    countryList,
+    seasonsList,
+    onChangeSeasons,
+    season,
+    onChangeCountry, country, leagueList, onChangeLeague, league, team, onChangeTeam, teamList,
   } = useContext(context);
 
   useEffect(() => {
@@ -36,10 +41,16 @@ function Header({ user }) {
           value={league}
         />
         <SelectInput
+          placeholder="Selecione a temporada"
+          data={seasonsList}
+          onChange={onChangeSeasons}
+          value={season}
+        />
+        <SelectInput
           placeholder="Selecione o time"
-          data={leagueList}
-          onChange={onChangeLeague}
-          value={league}
+          data={teamList}
+          onChange={onChangeTeam}
+          value={team}
         />
       </form>
     </header>
